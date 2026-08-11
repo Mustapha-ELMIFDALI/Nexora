@@ -1,0 +1,15 @@
+/* VOICE: confident retail tech store. IDEA: a premium phone shop. PICTURE: glossy blue phones on deep blue.
+   COLOUR: electric blue #2f6bff, white/ice #f4f7ff, deep night #0a0f1f. TYPE: Inter + Caveat script accents.
+   LAYOUT: full storefront plus checkout flow, hash-routed views. */
+*{min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{overflow-x:clip}
+.ph{background:radial-gradient(120% 80% at 50% 0%,#eaf0ff,#d6e1ff)}
+.dark .ph{background:radial-gradient(120% 80% at 50% 0%,#1d2a55,#121a36)}
+.ph img{transition:transform .5s}
+.card:hover .ph img{transform:scale(1.05)}
+.snap{scroll-snap-type:x mandatory;scrollbar-width:none}.snap::-webkit-scrollbar{display:none}.snap>*{scroll-snap-align:start}
+.view{animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+input:focus,button:focus-visible,a:focus-visible{outline:2px solid #2f6bff;outline-offset:2px}
