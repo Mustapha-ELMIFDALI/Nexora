@@ -1,0 +1,16 @@
+/* Nexora – order success and tracking pages */
+V.success=()=>`<section class="max-w-xl mx-auto px-4 py-10 text-center"><div class="box p-8 relative overflow-hidden">
+ <div class="w-20 h-20 mx-auto rounded-full bg-brand-500 text-white grid place-items-center shadow-xl shadow-brand-500/40"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></div>
+ <h1 class="text-2xl font-extrabold mt-5">Order placed successfully!</h1><p class="muted mt-2">Thank you for your order.<br>Your order number is <b class="text-brand-500">#${order}</b></p>
+ <div class="grid gap-3 mt-6"><a href="#track" class="btn">View order details</a><a href="#home" class="btn-o">Continue shopping</a></div>
+ <div class="mt-8 grid grid-cols-[1fr_auto] items-end gap-3"><div class="rounded-2xl overflow-hidden">${pic(byId('ip16'),'aspect-[4/3]')}</div><p class="font-hand text-3xl text-brand-500 rotate-[-8deg]">Enjoy your<br>new phone!</p></div>
+</div></section>`;
+
+V.track=()=>`<section class="max-w-4xl mx-auto px-4 py-6">${back('Home')}<h1 class="h2">Track your order</h1><p class="muted">Order #${order}</p>
+<div class="grid md:grid-cols-2 gap-6 mt-5"><div class="box p-6"><ol class="relative">
+ ${[['Order placed','Apr 26, 10:24 AM',1],['Processing','Apr 26, 02:15 PM',1],['Shipped','Apr 27, 09:30 AM',1],['Out for delivery','Expected Apr 28',0],['Delivered','',0]].map((s,i,a)=>`<li class="relative pl-10 pb-7 last:pb-0">${i<a.length-1?`<span class="absolute left-[13px] top-7 bottom-0 w-0.5 ${s[2]&&a[i+1][2]?'bg-brand-500':'bg-slate-200 dark:bg-white/10'}"></span>`:''}
+ <span class="absolute left-0 top-0 w-7 h-7 rounded-full grid place-items-center ${s[2]?'bg-brand-500 text-white':'border-2 border-slate-300 dark:border-white/20'}">${s[2]?'✓':''}</span><b class="block ${s[2]?'':'text-slate-400'}">${s[0]}</b><span class="muted text-xs">${s[1]}</span></li>`).join('')}</ol></div>
+ <div class="grid gap-4 content-start"><div class="box p-5 flex gap-3"><span class="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-500/15 text-brand-500 grid place-items-center">📅</span><div><span class="muted text-xs">Estimated delivery</span><b class="block">Apr 28, 2026</b></div></div>
+ <div class="box p-5 flex gap-3"><span class="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-500/15 text-brand-500 grid place-items-center">🏠</span><div><span class="muted text-xs">Shipping address</span><b class="block">${esc(ship.addr)}</b><span class="text-sm">${esc(ship.city)}, ${esc(ship.zip)}</span></div></div>
+ <div class="box overflow-hidden"><svg viewBox="0 0 400 200" class="w-full block"><rect width="400" height="200" class="fill-slate-100 dark:fill-ink-700"/><g class="stroke-white dark:stroke-ink-600" stroke-width="10" fill="none"><path d="M0 60H400M0 140H400M90 0V200M230 0V200M330 0V200"/><path d="M0 200L180 0" stroke-width="6"/></g><path d="M40 140H230V60H320" fill="none" stroke="#2f6bff" stroke-width="4" stroke-dasharray="8 6"/><rect x="140" y="128" width="30" height="20" rx="4" fill="#2f6bff"/><circle cx="148" cy="150" r="3" fill="#0b1d5c"/><circle cx="163" cy="150" r="3" fill="#0b1d5c"/><path d="M320 30a16 16 0 0116 16c0 12-16 28-16 28s-16-16-16-28a16 16 0 0116-16z" fill="#2f6bff"/><circle cx="320" cy="46" r="6" fill="#fff"/></svg></div></div>
+</div></section>`;
