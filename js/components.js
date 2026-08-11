@@ -1,0 +1,28 @@
+/* Nexora – shared UI components */
+/* drawn phone shown under each photo, visible if a photo fails to load */
+const phone=(c,bud)=>bud?`<svg viewBox="0 0 200 200" class="absolute inset-0 m-auto w-3/5 h-3/5"><rect x="40" y="70" width="120" height="90" rx="40" fill="#fff" stroke="#d5d9e3"/><ellipse cx="80" cy="95" rx="18" ry="22" fill="#f3f4f7" stroke="#cfd4de"/><ellipse cx="120" cy="95" rx="18" ry="22" fill="#f3f4f7" stroke="#cfd4de"/></svg>`:
+`<svg viewBox="0 0 200 260" class="absolute inset-0 m-auto h-[80%]"><defs><linearGradient id="g${c.slice(1)}" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="${c}"/><stop offset="1" stop-color="#0b1d5c"/></linearGradient><linearGradient id="s${c.slice(1)}" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#5b8cff"/><stop offset=".55" stop-color="#1642c4"/><stop offset="1" stop-color="#0b1d5c"/></linearGradient></defs>
+<ellipse cx="108" cy="248" rx="62" ry="8" fill="#000" opacity=".12"/><rect x="48" y="14" width="112" height="228" rx="22" fill="url(#g${c.slice(1)})"/><rect x="54" y="20" width="100" height="216" rx="17" fill="url(#s${c.slice(1)})"/><path d="M54 120 Q110 60 154 90 L154 236 L54 236Z" fill="#fff" opacity=".08"/><rect x="88" y="26" width="32" height="8" rx="4" fill="#05081a"/></svg>`;
+const pic=(p,cls='aspect-square')=>`<div class="ph relative overflow-hidden ${cls}">${phone(p.c,p.bud)}<img src="${p.img}" alt="${esc(p.n)}" loading="lazy" onerror="this.remove()" class="absolute inset-0 w-full h-full object-cover"></div>`;
+const stars=r=>`<span class="text-amber-400 tracking-tight">${'★'.repeat(Math.round(r))}<span class="text-slate-300 dark:text-slate-600">${'★'.repeat(5-Math.round(r))}</span></span>`;
+const heart=id=>`<button data-w="${id}" aria-label="Add to wishlist" class="absolute top-2 right-2 z-10 w-9 h-9 grid place-items-center rounded-full bg-white/90 dark:bg-ink-800/90 shadow ${wish.has(id)?'text-rose-500':'text-slate-500'}"><svg width="17" height="17" fill="${wish.has(id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 21s-7-4.4-9.3-9A5.3 5.3 0 0112 6a5.3 5.3 0 019.3 6c-2.3 4.6-9.3 9-9.3 9z"/></svg></button>`;
+const card=p=>`<article class="card box overflow-hidden flex flex-col relative">
+ ${p.tag?`<span class="absolute top-2 left-2 z-10 px-2.5 py-1 rounded-lg bg-brand-500 text-white text-[11px] font-bold">${p.tag}</span>`:''}
+ ${p.d?`<span class="absolute top-2 left-2 z-10 px-2 py-1 rounded-lg bg-rose-500 text-white text-[11px] font-bold">-${p.d}%</span>`:''}
+ ${heart(p.id)}<a href="#product" data-p="${p.id}">${pic(p)}</a>
+ <div class="p-4 flex flex-col gap-1 flex-1"><a href="#product" data-p="${p.id}" class="font-semibold hover:text-brand-500">${p.n}</a><span class="muted text-xs">${p.v}</span>
+ <div class="flex items-baseline gap-2 mt-1"><b class="text-lg whitespace-nowrap">${money(p.p)}</b>${p.o?`<s class="text-xs text-slate-400">${money(p.o)}</s>`:''}</div>
+ <div class="text-xs flex items-center gap-1">${stars(p.r)} <span class="muted text-xs">${p.r} (${p.rc})</span></div>
+ <button data-add="${p.id}" class="btn h-10 mt-3 w-full">Add to cart</button></div></article>`;
+const section=(id,t,s,body)=>`<section id="${id}" class="max-w-7xl mx-auto px-4 py-8 sm:py-10"><div class="flex items-end justify-between gap-4 mb-5"><div><h2 class="h2">${t}</h2>${s?`<p class="muted mt-1">${s}</p>`:''}</div><a href="#shop" class="text-sm font-semibold text-brand-500 whitespace-nowrap">View all →</a></div>${body}</section>`;
+const grid=list=>`<div class="snap flex sm:grid gap-4 sm:grid-cols-2 lg:grid-cols-4 overflow-x-auto sm:overflow-visible -mx-4 px-4 sm:mx-0 sm:px-0">${list.map(p=>`<div class="w-[72%] shrink-0 sm:w-auto">${card(p)}</div>`).join('')}</div>`;
+const back=(t,h='#home')=>`<a href="${h}" class="inline-flex items-center gap-2 text-sm font-semibold mb-4 hover:text-brand-500">← ${t}</a>`;
+const totals=()=>{const s=cart.reduce((a,i)=>a+byId(i.id).p*i.q,0);return{s,sh:0,t:s}};
+
+
+const fld=(k,l,t='text',v)=>`<label class="fld"><span>${l}</span><input name="${k}" type="${t}" required value="${esc(v??ship[k]??'')}"></label>`;
+const steps=n=>`<div class="flex items-center gap-2 sm:gap-4 my-5 text-xs sm:text-sm">${['Shipping','Payment','Confirmation'].map((s,i)=>`<span class="flex items-center gap-2 ${i+1<=n?'text-brand-500 font-semibold':'text-slate-400'}"><span class="w-7 h-7 rounded-full grid place-items-center ${i+1<=n?'bg-brand-500 text-white':'border border-slate-300 dark:border-white/20'}">${i+1<n?'✓':i+1}</span>${s}</span>${i<2?'<span class="flex-1 h-px bg-slate-200 dark:bg-white/10 max-w-16"></span>':''}`).join('')}</div>`;
+const sumRows=t=>`<div class="grid gap-2 text-sm"><div class="flex justify-between"><span class="muted">Subtotal</span><b>${money(t.s)}</b></div><div class="flex justify-between"><span class="muted">Shipping</span><b class="text-emerald-500">Free</b></div><div class="flex justify-between pt-3 mt-1 border-t border-slate-200 dark:border-white/10 text-base"><b>Total</b><b class="text-brand-500">${money(t.t)}</b></div></div>`;
+const summary=edit=>`<aside class="box p-5 lg:sticky lg:top-24"><div class="flex justify-between mb-4"><h2 class="font-bold">Order summary</h2>${edit?'<a href="#cart" class="text-sm text-brand-500 font-semibold">Edit</a>':''}</div>
+ <div class="grid gap-3 mb-4">${cart.map(i=>{const p=byId(i.id);return`<div class="flex gap-3 items-center"><div class="w-12 rounded-lg overflow-hidden shrink-0">${pic(p)}</div><div class="flex-1 text-sm"><b class="block">${p.n}${i.q>1?` ×${i.q}`:''}</b><span class="muted text-xs">${p.v}</span></div><b class="text-sm whitespace-nowrap">${money(p.p*i.q)}</b></div>`}).join('')}</div>${sumRows(totals())}</aside>`;
+
